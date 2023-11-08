@@ -1,9 +1,11 @@
 // import User from ''
-
+import express from 'express';
+import bcrypt from 'bcryptjs';
 import { NextFunction, Response } from "express";
 import User from "../model/user.model";
 import { Request, catchAsync } from "../utils/catchAsync";
 import { AppError } from "../utils/appError";
+
 
 const register = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -13,11 +15,25 @@ const register = catchAsync(
       next(new AppError("Please fill all the required fields", 400));
     }
 
-    const newUser = new User({ name, email, password, role });
-    const savedUser = await newUser.save();
-    res.status(200).json(savedUser);
+    const users = await User.find()
+        if (users.some(user => user.email === email)) {
+            return res.status(400).json({ message: 'Username already exists' });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        console.log("auth token", hashedPassword)
+
+        const newUser = new User({ name, email: email, password: hashedPassword ,role:role});
+        const savedUser = await newUser.save();
+        res.status(200).json({ savedUser, message: 'User registered successfully' });
   }
 );
+
+// const Login = catchAsync(
+//   async(req:Request, res:Response, next:NextFunction) =>{
+
+//   }
+// )
 
 // Update a user
 const updateUser = catchAsync(
