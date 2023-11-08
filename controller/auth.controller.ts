@@ -5,6 +5,9 @@ import { NextFunction, Response } from "express";
 import User from "../model/user.model";
 import { Request, catchAsync } from "../utils/catchAsync";
 import { AppError } from "../utils/appError";
+import jwt from "jsonwebtoken"
+import { Role, assignToken } from '../utils/jwtHelper';
+
 
 
 const register = catchAsync(
@@ -16,24 +19,49 @@ const register = catchAsync(
     }
 
     const users = await User.find()
-        if (users.some(user => user.email === email)) {
-            return res.status(400).json({ message: 'Username already exists' });
-        }
+    if (users.some(user => user.email === email)) {
+      return res.status(400).json({ message: 'Username already exists' });
+    }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        console.log("auth token", hashedPassword)
+    const hashedPassword = await bcrypt.hash(password, 10);
+    console.log("auth token", hashedPassword)
 
-        const newUser = new User({ name, email: email, password: hashedPassword ,role:role});
-        const savedUser = await newUser.save();
-        res.status(200).json({ savedUser, message: 'User registered successfully' });
+    const newUser = new User({ name, email: email, password: hashedPassword, role: role });
+    const savedUser = await newUser.save();
+    res.status(200).json({ savedUser, message: 'User registered successfully' });
   }
 );
 
-// const Login = catchAsync(
-//   async(req:Request, res:Response, next:NextFunction) =>{
+const login = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { email, password } = req.body;
+      const users = await User.find()
+      const user = users.find(u => u.email === email);
+      console.log("loged data", user)
 
-//   }
-// )
+      if (!user) {
+        return res.status(401).json({ message: 'Invalid email' });
+      }
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      console.log("password", passwordMatch)
+      if (!passwordMatch) {
+        return res.status(401).json({ message: 'Invalid Password' });
+      }
+      const payload = { id: user.id, email: user.email, role: user.role as Role };
+      const secretKey = 'key'
+      const expiresIn = '7d';
+      const token = assignToken(payload, secretKey, expiresIn);
+      console.log(res)
+      return res.status(200).json({ token, message: 'User login successfully' });
+
+    }
+    catch (error) {
+      return res.status(500).json({ message: 'Internal Server Error' });
+    }
+
+  }
+)
 
 // Update a user
 const updateUser = catchAsync(
@@ -101,4 +129,4 @@ const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export { register, updateUser, deleteUser, getUserById, getAllUsers };
+export { register, updateUser, deleteUser, getUserById, getAllUsers,login };

@@ -1,10 +1,12 @@
 import jwt from "jsonwebtoken";
 import { Types } from "mongoose";
 
+export type Role = "user" | "admin" | "superadmin";
+
 export type Payload = {
   id?: Types.ObjectId;
   email?: string;
-  role?: "USER" | "ADMIN" | "MANAGER";
+  role?: Role
 };
 
 const expiresInSeconds = (days: number) => days * 24 * 60 * 60;
