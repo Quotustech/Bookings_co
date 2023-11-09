@@ -1,4 +1,5 @@
-import mongoose, { Model } from "mongoose";
+import mongoose, { HydratedDocument, Model, QueryWithHelpers } from "mongoose";
+import { createHash } from "../utils/bcryptHelper";
 
 export interface UserType {
   name: string;
@@ -7,9 +8,19 @@ export interface UserType {
   role: string;
 }
 
-type UserModelType = Model<UserType>;
+interface UserQueryHelpers {
+  byEmail(
+    email: string
+  ): QueryWithHelpers<
+    HydratedDocument<UserType>[],
+    HydratedDocument<UserType>,
+    UserQueryHelpers
+  >;
+}
 
-const userSchema = new mongoose.Schema<UserType>(
+type UserModelType = Model<UserType, UserQueryHelpers>;
+
+const userSchema = new mongoose.Schema<UserType, {}, {}, UserQueryHelpers>(
   {
     name: {
       type: String,
@@ -35,6 +46,19 @@ const userSchema = new mongoose.Schema<UserType>(
     timestamps: true,
   }
 );
+
+userSchema.query.byEmail = function byEmail(
+  this: QueryWithHelpers<any, HydratedDocument<UserType>, UserQueryHelpers>,
+  email: string
+) {
+  return this.find({ email });
+};
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await createHash(this.password);
+  next();
+});
 
 const User = mongoose.model<UserType, UserModelType>("User", userSchema);
 
