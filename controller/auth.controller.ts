@@ -39,16 +39,16 @@ const register = catchAsync(
 const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
-    const users = await User.find().byEmail(email);
 
     if (!email || !password) {
       return next(
         new AppError("Please provide all the required credentials", 400)
       );
     }
+    const users = await User.find().byEmail(email);
 
     if (!users.length || !(await compareHash(password, users[0]?.password))) {
-      next(new AppError("Invalid email or password", 401));
+      return next(new AppError("Invalid email or password", 401));
     }
 
     const accessToken = assignToken(
@@ -81,7 +81,7 @@ const updateUser = catchAsync(
     const user = await User.findById(userId);
 
     if (!user) {
-      next(new AppError(`No user found with this id ${userId}`, 404));
+      return next(new AppError(`No user found with this id ${userId}`, 404));
     }
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -106,7 +106,7 @@ const deleteUser = catchAsync(
     const user = await User.findById(userId);
 
     if (!user) {
-      next(new AppError(`No user found with this id ${userId}`, 404));
+      return next(new AppError(`No user found with this id ${userId}`, 404));
     }
 
     await User.findByIdAndDelete(userId);
@@ -127,7 +127,7 @@ const getUserById = catchAsync(
     const user = await User.findById(userId);
 
     if (!user) {
-      next(new AppError(`No user found with this id ${userId}`, 404));
+      return next(new AppError(`No user found with this id ${userId}`, 404));
     }
 
     res.status(200).json({
