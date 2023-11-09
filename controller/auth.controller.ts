@@ -52,7 +52,6 @@ const login = catchAsync(
       const secretKey = 'key'
       const expiresIn = '7d';
       const token = assignToken(payload, secretKey, expiresIn);
-      console.log(res)
       return res.status(200).json({ token, message: 'User login successfully' });
 
     }
