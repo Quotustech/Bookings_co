@@ -33,4 +33,5 @@ const querySchema = new mongoose.Schema<QueryType>({
   });
 
 const Query = mongoose.model<QueryType, QueryModelType>('Query', querySchema);
-module.exports = Query;
+
+export default Query

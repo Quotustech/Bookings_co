@@ -23,7 +23,7 @@ export const protect = catchAsync(
 
     req.jwt = token;
 
-    const decoded = await decodeToken(token, process.env.ACCESS_TOKEN_SECRET!);
+    const decoded = await decodeToken(token, process.env.JWT_SECRET_KEY!);
 
     // const manager = await managerService.getManagerById(decoded?.id);
 

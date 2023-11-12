@@ -38,7 +38,6 @@ const login = catchAsync(
       const { email, password } = req.body;
       const users = await User.find()
       const user = users.find(u => u.email === email);
-      console.log("loged data", user)
 
       if (!user) {
         return res.status(401).json({ message: 'Invalid email' });
@@ -49,9 +48,9 @@ const login = catchAsync(
         return res.status(401).json({ message: 'Invalid Password' });
       }
       const payload = { id: user.id, email: user.email, role: user.role as Role };
-      const secretKey = 'key'
+      const secretKey = process.env.JWT_SECRET_KEY
       const expiresIn = '7d';
-      const token = assignToken(payload, secretKey, expiresIn);
+      const token = assignToken(payload, secretKey!, expiresIn);
       return res.status(200).json({ token, message: 'User login successfully' });
 
     }

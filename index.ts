@@ -1,6 +1,7 @@
 import express, { NextFunction, Request, Response } from "express";
 import authRouter from "./routes/auth.route";
 import userRouter from "./routes/user.ruote"
+import queryRouter from "./routes/query.route"
 import cors from "cors";
 import morgan from "morgan";
 import { AppError } from "./utils/appError";
@@ -20,6 +21,8 @@ const DB = process.env.DATABASE_URL;
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
+app.use("/api/v1", queryRouter);
+
 
 
 app.all("*", (req: Request, _res: Response, next: NextFunction) => {
