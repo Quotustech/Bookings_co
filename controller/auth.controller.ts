@@ -1,14 +1,13 @@
 // import User from ''
-import express from 'express';
-import bcrypt from 'bcryptjs';
+import express from "express";
+import bcrypt from "bcryptjs";
 import { NextFunction, Response } from "express";
 import User from "../model/user.model";
 import { Request, catchAsync } from "../utils/catchAsync";
 import { AppError } from "../utils/appError";
-import jwt from "jsonwebtoken"
-import { Role, assignToken } from '../utils/jwtHelper';
-
-
+import jwt from "jsonwebtoken";
+import { Role, assignToken } from "../utils/jwtHelper";
+import { compareHash } from "../utils/bcryptHelper";
 
 const register = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -18,48 +17,60 @@ const register = catchAsync(
       next(new AppError("Please fill all the required fields", 400));
     }
 
-    const users = await User.find()
-    if (users.some(user => user.email === email)) {
-      return res.status(400).json({ message: 'Username already exists' });
+    const user = await User.find({
+      email,
+    });
+
+    if (user.length) {
+      next(new AppError("An user is already exits with this email", 400));
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("auth token", hashedPassword)
+    const newUser = await User.create({ name, email, password, role: role });
 
-    const newUser = new User({ name, email: email, password: hashedPassword, role: role });
-    const savedUser = await newUser.save();
-    res.status(200).json({ savedUser, message: 'User registered successfully' });
+    res.status(201).json({
+      status: "success",
+      error: false,
+      message: "User registered successfully",
+      data: newUser,
+    });
   }
 );
 
 const login = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const { email, password } = req.body;
-      const users = await User.find()
-      const user = users.find(u => u.email === email);
+    const { email, password } = req.body;
 
-      if (!user) {
-        return res.status(401).json({ message: 'Invalid email' });
-      }
-      const passwordMatch = await bcrypt.compare(password, user.password);
-      console.log("password", passwordMatch)
-      if (!passwordMatch) {
-        return res.status(401).json({ message: 'Invalid Password' });
-      }
-      const payload = { id: user.id, email: user.email, role: user.role as Role };
-      const secretKey = process.env.JWT_SECRET_KEY
-      const expiresIn = '7d';
-      const token = assignToken(payload, secretKey!, expiresIn);
-      return res.status(200).json({ token, message: 'User login successfully' });
-
+    if (!email || !password) {
+      return next(
+        new AppError("Please provide all the required credentials", 400)
+      );
     }
-    catch (error) {
-      return res.status(500).json({ message: 'Internal Server Error' });
+    const users = await User.find().byEmail(email);
+
+    if (!users.length || !(await compareHash(password, users[0]?.password))) {
+      return next(new AppError("Invalid email or password", 401));
     }
 
+    const accessToken = assignToken(
+      {
+        id: users[0]?.id,
+        email: users[0]?.email,
+        role: users[0]?.role as Role,
+      },
+      process.env.JWT_SECRET_KEY!,
+      process.env.JWT_EXPIRES_IN!
+    );
+
+    return res.status(200).json({
+      status: "success",
+      error: false,
+      message: "User login successfully",
+      data: {
+        accessToken,
+      },
+    });
   }
-)
+);
 
 // Update a user
 const updateUser = catchAsync(
@@ -70,7 +81,7 @@ const updateUser = catchAsync(
     const user = await User.findById(userId);
 
     if (!user) {
-      next(new AppError(`No user found with this id ${userId}`, 404));
+      return next(new AppError(`No user found with this id ${userId}`, 404));
     }
 
     const updatedUser = await User.findByIdAndUpdate(
@@ -79,7 +90,12 @@ const updateUser = catchAsync(
       { new: true }
     );
 
-    res.json(updatedUser);
+    return res.status(200).json({
+      status: "success",
+      error: false,
+      message: "User updated successfully",
+      data: updatedUser,
+    });
   }
 );
 
@@ -90,13 +106,16 @@ const deleteUser = catchAsync(
     const user = await User.findById(userId);
 
     if (!user) {
-      next(new AppError(`No user found with this id ${userId}`, 404));
+      return next(new AppError(`No user found with this id ${userId}`, 404));
     }
 
     await User.findByIdAndDelete(userId);
 
     res.status(200).json({
+      status: "success",
+      error: false,
       message: "User deleted successfully",
+      data: null,
     });
   }
 );
@@ -108,9 +127,12 @@ const getUserById = catchAsync(
     const user = await User.findById(userId);
 
     if (!user) {
-      next(new AppError(`No user found with this id ${userId}`, 404));
+      return next(new AppError(`No user found with this id ${userId}`, 404));
     }
+
     res.status(200).json({
+      status: "success",
+      error: false,
       message: "User fetched successfully",
       data: user,
     });
@@ -121,10 +143,12 @@ const getUserById = catchAsync(
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
   const users = await User.find();
   res.status(200).json({
+    status: "success",
+    error: false,
     message: "Users fetched successfully",
     totalUsers: users.length,
     data: users,
   });
 });
 
-export { register, updateUser, deleteUser, getUserById, getAllUsers,login };
+export { register, updateUser, deleteUser, getUserById, getAllUsers, login };

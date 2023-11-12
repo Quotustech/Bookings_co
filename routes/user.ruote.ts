@@ -1,21 +1,19 @@
 import { Router } from "express";
-import { register,updateUser,deleteUser,getAllUsers,getUserById } from "../controller/auth.controller";
-import { Request, Response, NextFunction } from 'express';
+import {
+  updateUser,
+  deleteUser,
+  getAllUsers,
+  getUserById,
+} from "../controller/auth.controller";
 
 const router = Router();
 
+router.route("/").get(getAllUsers as any);
 
-router.route("/updateUser").put(updateUser as any);
-
-router.route("/deleteUser").delete(deleteUser as any);
-
-router.route("/getAllUser").get(getAllUsers as any);
-
-router.route("/getUser").get(getUserById as any);
-
-router.use((req: Request, res: Response, next: NextFunction) => {
-      res.status(404).json({ error: "URL not found" });
-   
-  });
+router
+  .route("/:id")
+  .put(updateUser as any)
+  .delete(deleteUser as any)
+  .get(getUserById as any);
 
 export default router;

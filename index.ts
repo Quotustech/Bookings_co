@@ -24,7 +24,6 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1", queryRouter);
 
 
-
 app.all("*", (req: Request, _res: Response, next: NextFunction) => {
   next(new AppError(`Can't find ${req.originalUrl} path on the server`, 404));
 });
