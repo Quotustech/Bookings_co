@@ -1,7 +1,7 @@
 import { Router } from "express";
 import {createpropertyInfo,getAllProperty,getPropertyInfoById,updatePropertyInfo,deleteProperty} from '../controller/propertyInfo.controller';
 import {createPropertyAddress, updatePropertyAddress, deletePropertyAddress, getPropertyAddressById} from '../controller/propertyaddress.controller';
-import {createPropertyAminite} from '../controller/propertyaminite.controller';
+import {createPropertyAminite, getPropertyAminiteById} from '../controller/propertyaminite.controller';
 
 
 
@@ -40,6 +40,7 @@ router.route("/getPropertyAddress/:id").get(getPropertyAddressById as any);
 
 router.route("/createPropertyAminites").post(createPropertyAminite as any);
 
+router.route("/getPropertyAminites/:id").get(getPropertyAminiteById as any);
 
 
 

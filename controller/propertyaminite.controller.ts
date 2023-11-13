@@ -64,4 +64,20 @@ const createPropertyAminite = catchAsync(
 
 );
 
-export {createPropertyAminite};
+const getPropertyAminiteById = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const propertyId = req.params.id;
+        const property = await PropertyAminite.findById(propertyId);
+    
+        if (!property) {
+          return next(new AppError(`No property found with this id ${propertyId}`, 404));
+        }
+    
+        res.status(200).json({
+          status: "success",
+          error: false,
+          message: "Property aminite fetched successfully",
+          data: property,
+        });
+      })
+export {createPropertyAminite, getPropertyAminiteById};
