@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {createpropertyInfo,getAllProperty,getPropertyInfoById,updatePropertyInfo,deleteProperty} from '../controller/propertyInfo.controller';
-import {createPropertyAddress} from '../controller/propertyaddress.controller';
+import {createPropertyAddress, updatePropertyAddress, deletePropertyAddress, getPropertyAddressById} from '../controller/propertyaddress.controller';
 import {createPropertyAminite} from '../controller/propertyaminite.controller';
 
 
@@ -26,6 +26,15 @@ router.route("/getProperty/:id").get(getPropertyInfoById as any);
 // property address router
 
 router.route("/createPropertyAddress").post(createPropertyAddress as any);
+
+router.route("/updatePropertyAddress/:id").put(updatePropertyAddress as any);
+
+router.route("/deletePropertyAddress").delete(deletePropertyAddress as any);
+
+
+router.route("/getPropertyAddress/:id").get(getPropertyAddressById as any);
+
+
 
 // property aminites router
 
