@@ -39,4 +39,83 @@ const createpropertyInfo = catchAsync(
 
     });
 
-export {createpropertyInfo};
+
+const updatePropertyInfo = catchAsync(
+    async( req: Request, res: Response, next: NextFunction)=>{
+        const propertInfoId = req.params.id;
+
+        const {property_name, property_email, property_contact, star_ratings, property_code} = req.body;
+
+        const property = await PropertyInfo.findById(propertInfoId);
+
+    if (!property) {
+      return next(new AppError(`No property found with this id ${propertInfoId}`, 404));
+    }
+
+    const updateProperty = await PropertyInfo.findByIdAndUpdate(
+        propertInfoId,
+        {property_name, property_email, property_contact, star_ratings, property_code},
+        {new: true}
+    );
+    return res.status(200).json({
+        status: "success",
+        error: false,
+        message: "Property updated successfully",
+        data: updateProperty,
+      });
+
+    }
+);
+
+const deleteProperty = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+      const propertyInfoId = req.params.id;
+  
+      const property = await PropertyInfo.findById(propertyInfoId);
+  
+      if (!property) {
+        return next(new AppError(`No property found with this id ${property}`, 404));
+      }
+  
+      await PropertyInfo.findByIdAndDelete(propertyInfoId);
+  
+      res.status(200).json({
+        status: "success",
+        error: false,
+        message: "Property deleted successfully",
+        data: null,
+      });
+    }
+  );
+
+
+  const getPropertyInfoById = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const propertyId = req.params.id;
+        const property = await PropertyInfo.findById(propertyId);
+    
+        if (!property) {
+          return next(new AppError(`No property found with this id ${propertyId}`, 404));
+        }
+    
+        res.status(200).json({
+          status: "success",
+          error: false,
+          message: "Property fetched successfully",
+          data: property,
+        });
+      })
+
+      const getAllProperty = catchAsync(async (req: Request, res: Response) => {
+        const properties = await PropertyInfo.find();
+
+        res.status(200).json({
+          status: "success",
+          error: false,
+          message: "Property fetched successfully",
+          totalUsers: properties.length,
+          data: properties,
+        });
+      });
+
+export {createpropertyInfo,updatePropertyInfo,deleteProperty,getPropertyInfoById,getAllProperty};
