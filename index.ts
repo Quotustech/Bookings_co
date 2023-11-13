@@ -2,7 +2,8 @@ import express, { NextFunction, Request, Response } from "express";
 import authRouter from "./routes/auth.route";
 import userRouter from "./routes/user.ruote"
 import queryRouter from "./routes/query.route"
-import hotelRouter from "./routes/hotel.route"
+import hotelRouter from "./routes/hotel.route";
+import propertyRouter from './routes/property.route'
 import cors from "cors";
 import morgan from "morgan";
 import { AppError } from "./utils/appError";
@@ -24,6 +25,8 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1", queryRouter);
 app.use("/api/v1",hotelRouter)
+app.use("/api/v1",propertyRouter)
+
 
 
 app.all("*", (req: Request, _res: Response, next: NextFunction) => {
