@@ -15,7 +15,9 @@ const createPropertyAddress = catchAsync(
             state,
             city,
             location,
-            neighbour_area } = req.body;
+            neighbour_area,
+            zip_code
+           } = req.body;
 
             if (!req.body) {
                 next(new AppError("Please fill all the required fields", 400));
@@ -29,7 +31,8 @@ const createPropertyAddress = catchAsync(
                 state,
                 city,
                 location,
-                neighbour_area
+                neighbour_area,
+                zip_code
             });
 
             await PropertyInfo.findByIdAndUpdate(propertyInfo, { property_address: newPropertyAddress._id });
@@ -57,7 +60,9 @@ const updatePropertyAddress = catchAsync(
             state,
             city,
             location,
-            neighbour_area} = req.body;
+            neighbour_area,
+            zip_code
+          } = req.body;
 
         const propertyAddress = await PropertyAddress.findById(propertAddressId);
 
@@ -73,7 +78,9 @@ const updatePropertyAddress = catchAsync(
             state,
             city,
             location,
-            neighbour_area},
+            neighbour_area,
+            zip_code
+          },
         {new: true}
     );
     return res.status(200).json({

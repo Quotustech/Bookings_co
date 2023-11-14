@@ -10,6 +10,7 @@ interface PropertyAddressType extends Document {
     city: string;
     location: string;
     neighbour_area:string;
+    zip_code:number
 
 }
 
@@ -23,6 +24,8 @@ const propertyAddressSchema = new Schema<PropertyAddressType>({
     city: { type: String, required: true },
     location: { type: String, required: true },
     neighbour_area: { type: String, required: true },
+    zip_code: { type: Number, required: true },
+
 
 });
 
