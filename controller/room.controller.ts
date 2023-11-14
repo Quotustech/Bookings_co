@@ -53,6 +53,61 @@ const updateRoom = catchAsync(
         data: updatedRoom,
       });
     }
+);
+
+const deleteRoom = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const room_Id = req.params.id;
+
+    const room = await Room.findById(room_Id);
+
+    if (!room) {
+      return next(new AppError(`No property found with this id ${room_Id}`, 404));
+    }
+
+    await Room.findByIdAndDelete(room_Id);
+
+    res.status(200).json({
+      status: "success",
+      error: false,
+      message: "Room deleted successfully",
+      data: null,
+    });
+  }
+);
+
+const getRoomById = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) =>{
+
+    const roomId = req.params.id;
+
+    const room = await Room.findById(roomId);
+    
+        if (!room) {
+          return next(new AppError(`No property found with this id ${roomId}`, 404));
+        }
+
+        res.status(200).json({
+          status: "success",
+          error: false,
+          message: "Room fetched successfully",
+          data: room,
+        });
+  }
+);
+
+const getRooms = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) =>{
+    const rooms = await Room.find();
+
+    res.status(200).json({
+      status: "success",
+      error: false,
+      message: "Rooms fetched successfully",
+      totalRooms: rooms.length,
+      data: rooms,
+    });
+  }
 )
 
-export {createRoom, updateRoom};
+export {createRoom, updateRoom, deleteRoom,getRoomById, getRooms};

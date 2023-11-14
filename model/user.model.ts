@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema<UserType, {}, {}, UserQueryHelpers>(
     },
     role: {
       type: String,
-      enum: ["superadmin", "admin", "user"],
+      enum: ["superadmin", "admin", "user", "property_manager"],
       default: "superadmin",
     },
   },

@@ -113,7 +113,7 @@ const deleteProperty = catchAsync(
           status: "success",
           error: false,
           message: "Property fetched successfully",
-          totalUsers: properties.length,
+          totalProperty: properties.length,
           data: properties,
         });
       });
