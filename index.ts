@@ -4,6 +4,7 @@ import userRouter from "./routes/user.ruote"
 import queryRouter from "./routes/query.route"
 import hotelRouter from "./routes/hotel.route";
 import propertyRouter from './routes/property.route'
+import roomRouter from './routes/room.route';
 import cors from "cors";
 import morgan from "morgan";
 import { AppError } from "./utils/appError";
@@ -26,6 +27,8 @@ app.use("/api/v1/user", userRouter);
 app.use("/api/v1", queryRouter);
 app.use("/api/v1",hotelRouter)
 app.use("/api/v1",propertyRouter)
+app.use("/api/v1",roomRouter)
+
 
 
 
