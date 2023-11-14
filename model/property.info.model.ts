@@ -12,6 +12,8 @@ interface PropertyInfoType extends Document {
     property_address: Types.ObjectId |  PropertyAddressType;
     property_des: Types.ObjectId |  PropertyDesType;
     property_aminite: Types.ObjectId |  PropertyAnimiteType;
+    image: string;
+    description: string;
 
     
 }
@@ -26,6 +28,8 @@ const propertyInfoSchema = new Schema<PropertyInfoType>({
     property_address: { type: Schema.Types.ObjectId, ref: 'PropertyAddress' },
     property_des: { type: Schema.Types.ObjectId, ref: 'PropertyDes' },
     property_aminite: { type: Schema.Types.ObjectId, ref: 'PropertyAminite' },
+    image: { type: String },
+    description: {type: String}
    
 });
 

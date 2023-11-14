@@ -5,7 +5,7 @@ import { PropertyInfo } from '../model/property.info.model';
 
 const createpropertyInfo = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        const { property_name, property_email, property_contact, star_ratings, property_code } = req.body;
+        const { property_name, property_email, property_contact, star_ratings, property_code, image, description } = req.body;
 
         if (!req.body) {
             next(new AppError("Please fill all the required fields", 400));
@@ -24,7 +24,9 @@ const createpropertyInfo = catchAsync(
             property_email,
             property_contact,
             star_ratings,
-            property_code
+            property_code,
+            image, 
+            description
         });
         const totalProperty = await PropertyInfo.find();
 
@@ -44,7 +46,7 @@ const updatePropertyInfo = catchAsync(
     async( req: Request, res: Response, next: NextFunction)=>{
         const propertInfoId = req.params.id;
 
-        const {property_name, property_email, property_contact, star_ratings, property_code} = req.body;
+        const {property_name, property_email, property_contact, star_ratings, property_code, image, description} = req.body;
 
         const property = await PropertyInfo.findById(propertInfoId);
 
@@ -54,7 +56,7 @@ const updatePropertyInfo = catchAsync(
 
     const updateProperty = await PropertyInfo.findByIdAndUpdate(
         propertInfoId,
-        {property_name, property_email, property_contact, star_ratings, property_code},
+        {property_name, property_email, property_contact, star_ratings, property_code, image, description},
         {new: true}
     );
     return res.status(200).json({

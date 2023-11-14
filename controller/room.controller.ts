@@ -6,13 +6,13 @@ import {Room } from '../model/room.model';
 
 const createRoom =  catchAsync(
     async (req: Request, res:Response, next: NextFunction)=>{
-        const {propertyInfo_id, name, type, price, capacity, amenities } = req.body;
+        const {propertyInfo_id, name, type, price, capacity, amenities, image, description  } = req.body;
 
         if (!req.body) {
             next(new AppError("Please fill all the required fields", 400));
         }
 
-        const newRoom = await Room.create({propertyInfo_id, name, type, price, capacity, amenities});
+        const newRoom = await Room.create({propertyInfo_id, name, type, price, capacity, amenities, image, description});
         const totalRoom = await Room.find();
 
         res.status(201).json({

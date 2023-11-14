@@ -81,6 +81,10 @@ interface RoomAmenities {
       workLeisure: WorkLeisureAmenities;
       accessibilityFeatures: AccessibilityFeaturesAmenities;
     };
+    image: string;
+    description: string;
+
+
   }
 
   const roomSchema = new Schema<RoomType>({
@@ -153,6 +157,9 @@ interface RoomAmenities {
         wheelchairAccessibility: { type: Boolean, default: false },
       },
     },
+    image: { type: String },
+    description: {type: String}
+
   });
   
   const Room = mongoose.model<RoomType>('Room', roomSchema);
