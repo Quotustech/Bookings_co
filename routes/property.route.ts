@@ -3,7 +3,7 @@ import {createpropertyInfo,getAllProperty,getPropertyInfoById,updatePropertyInfo
 import {createPropertyAddress, updatePropertyAddress, deletePropertyAddress, getPropertyAddressById} from '../controller/propertyaddress.controller';
 import {createPropertyAminite, getPropertyAminiteById} from '../controller/propertyaminite.controller';
 
-
+import {createPaymentMethod} from '../controller/property/paymentmethod.controller'
 
 const router = Router();
 
@@ -19,6 +19,9 @@ router.route("/getAllProperty").get(getAllProperty as any);
 
 router.route("/getProperty/:id").get(getPropertyInfoById as any);
 
+
+// property payment router
+router.route("/createPropertyPaymentMethod").post(createPaymentMethod as any);
 
 
 
