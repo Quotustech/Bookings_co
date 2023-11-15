@@ -1,8 +1,10 @@
 import mongoose, { Document, Schema, Types } from 'mongoose';
 import {PropertyAddress,PropertyAddressType} from '../model/property.address.model';
 import {PropertyAminite,PropertyAnimiteType} from '../model/property.aminites.model'
+import { UserType } from './user.model';
 
 interface PropertyInfoType extends Document {
+    user_Id: Types.ObjectId | UserType;
     property_name: string;
     property_email:string;
     property_contact:number;
@@ -18,6 +20,7 @@ interface PropertyInfoType extends Document {
 
 
 const propertyInfoSchema = new Schema<PropertyInfoType>({
+    user_Id:{ type: Schema.Types.ObjectId, ref: 'User' ,required: true},
     property_name: { type: String, required: true },
     property_email: { type: String, required: true },
     property_contact: { type: Number, required: true },

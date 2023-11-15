@@ -4,18 +4,19 @@ import {createPropertyAddress, updatePropertyAddress, deletePropertyAddress, get
 import {createPropertyAminite, getPropertyAminiteById} from '../controller/propertyaminite.controller';
 
 import {createPaymentMethod} from '../controller/property/paymentmethod.controller'
+import { protect } from "../middlewares/auth.middleware";
 
 const router = Router();
 
 // property router
 
-router.route("/createProperty").post(createpropertyInfo as any);
+router.route("/createProperty").post(protect as any,createpropertyInfo as any);
 
 router.route("/updateProperty/:id").put(updatePropertyInfo as any);
 
 router.route("/deleteProperty").delete(deleteProperty as any);
 
-router.route("/getAllProperty").get(getAllProperty as any);
+router.route("/getAllProperty").get(protect as any, getAllProperty as any);
 
 router.route("/getProperty/:id").get(getPropertyInfoById as any);
 
