@@ -1,4 +1,4 @@
-# Technical Documentation for [Your OTA Name]
+# Technical Documentation for Yootrip
 
 ## Table of Contents
 ...
