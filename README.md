@@ -9,12 +9,12 @@
 
 #### User Flow Design:
 The User Flow Design outlines the high-level process and interactions within the Online Travel Agency (OTA) platform. It illustrates how users navigate through the system, from registration to property booking and payment processing.
-
+[User flow Architecture Design](https://www.figma.com/file/0SsKM5NVWxXRXRlqxhceLu/Naturopura-low-level-design?type=whiteboard&t=x5KJ313XGYQUQlkj-1)
 ![User flow Architecture Design](https://github.com/Quotustech/Bookings_co/blob/main/resources/Screenshot%20from%202023-11-17%2010-19-54.png)
 
 #### Low-Level Design:
 The Low-Level Design provides a more detailed view of the system's components, their interactions, and the flow of data. It delves into the inner workings of the OTA platform, offering insights into the technical aspects that enable the seamless functioning of the system.
-
+[OTA System Architecture Design](https://www.figma.com/file/0SsKM5NVWxXRXRlqxhceLu/Naturopura-low-level-design?type=whiteboard&t=x5KJ313XGYQUQlkj-1)
 ![OTA System Architecture Design](https://github.com/Quotustech/Bookings_co/blob/main/resources/Screenshot%20from%202023-11-17%2010-21-02.png)
 
 #### Microservices
