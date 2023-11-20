@@ -136,7 +136,7 @@ The Low-Level Design provides a more detailed view of the system's components, t
 
 ## 4. Data Models
 
-[Include MongoDB data models for each service.]
+![User flow Architecture Design](https://github.com/Quotustech/Bookings_co/blob/main/resources/booking_data_digram%201.svg)
 
 ## 5. Third-Party Integrations
 1. **Razorpay Integration**
