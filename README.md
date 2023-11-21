@@ -1,9 +1,6 @@
 # Technical Documentation for Yootrip
 
-## Table of Contents
-...
-
-## 2. Architecture
+## 1. Architecture
 
 ### System Architecture
 
@@ -131,17 +128,17 @@ The Low-Level Design provides a more detailed view of the system's components, t
 - Database: MongoDB
 - ...
 
-## 3. Development Environment Setup
+## 2. Development Environment Setup
 ...
 
-## 4. API Documentation
+## 3. API Documentation
 ...
 
-## 5. Data Models
+## 4. Data Models
 
-[Include MongoDB data models for each service.]
+![User flow Architecture Design](https://github.com/Quotustech/Bookings_co/blob/main/resources/booking_data_digram%201.svg)
 
-## 8. Third-Party Integrations
+## 5. Third-Party Integrations
 1. **Razorpay Integration**
     - **Description:**
         - Integration with Razorpay for seamless payment processing.
@@ -152,7 +149,7 @@ The Low-Level Design provides a more detailed view of the system's components, t
         - Implement webhooks for real-time updates on payment status.
         - Handle payment confirmation and generate invoices.
 
-## 19. Versioning
+## 6. Versioning
 
 1. **1.0.0**
    - **Description:**
