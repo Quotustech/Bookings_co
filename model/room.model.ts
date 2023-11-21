@@ -68,6 +68,7 @@ interface RoomAmenities {
     name: string;
     type: string;
     price: number;
+    available: boolean;
     capacity: number;
     amenities: {
       basic: RoomAmenities;
@@ -100,6 +101,10 @@ interface RoomAmenities {
     price: {
       type: Number,
       required: true,
+    },
+    available:{
+      type: Boolean, 
+      default: false
     },
     capacity: {
       type: Number,
